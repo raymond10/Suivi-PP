@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="vues" />
+		<property name="defaultParentView" value="layoutView" />
+	</bean>
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">
+					dataAccessFailure
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- beans ref -->
+	<bean id="extraction" class="fr.utt.sig.suivi.beans.Extraction"></bean>
+
+
+	<!-- les contrôleurs de l'application -->
+
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/reports/extraction*.csv">extractionsController</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="extractionsController" class="fr.utt.sig.suivi.ExtractionsController">
+		<property name="listes" ref="listeSQL" />
+		<property name="suivi" ref="suiviSQL" />
+		<property name="extractions" ref="extractionSQL" />
+		<property name="extraction" ref="extraction" />
+	</bean>
+
+
+
+
+</beans>

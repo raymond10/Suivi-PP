@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Profil">
+
+	<resultMap id="totaux" class="fr.utt.sig.suivi.beans.profil.Total">
+		<result property="total_id" column="profil_total_id" />
+		<result property="param_id" column="profil_param_id" />
+		<result property="total" column="total" />
+		<result property="min" column="min" />
+		<result property="sacquis" column="acquis_$f" />
+		<result property="ordre_col" column="ordre_col" />
+		<result property="longueur" column="longueur" />
+		<result property="ordre_lg" column="ordre_lg" />
+	</resultMap>
+
+
+	<select id="getTotaux" resultMap="totaux">
+		select
+		profil_total_id,
+		profil_param_id,
+		total,
+		min,
+		acquis_$$f,
+		ordre_col,
+		longueur,
+		ordre_lg
+		from
+		profil_totaux
+		where etu_id = #etu_id:NUMERIC#
+		and diplome_$$c =
+		#diplome:VARCHAR#
+		and prd_debut = #prd_debut:VARCHAR#
+		order by
+		ordre_lg,ordre_col
+	</select>
+
+
+
+	<resultMap id="total" class="fr.utt.sig.suivi.beans.profil.Totaux">
+		<result property="id" column="ID" />
+		<result property="libelle" column="libelle" />
+		<result property="diplome" column="diplome" />
+		<result property="etu_id" column="etu_id" />
+		<result property="totaux"
+			column="{etu_id=etu_id, diplome=diplome,prd_debut=prd_debut}" select="getTotaux" />
+	</resultMap>
+
+	<select id="getTotal" resultMap="total">
+		select
+		$etu_id$ as etu_id,
+		'$diplome$' as diplome,
+		'$specialite$' as spec,
+		'$prd_debut$' as
+		prd_debut,
+		profil_total_id as id,
+		lib_abr as libelle,
+		ordre
+		from
+		ref_profil_total
+		where
+		diplome_$$c = #diplome:VARCHAR#
+		and
+		nvl(dipl_spec_$$c,'*')=nvl(#specialite:VARCHAR#,'*')
+		and
+		niv_entree=#niveau_entree:VARCHAR#
+		and #prd_debut:VARCHAR# between
+		prd_debut and prd_fin
+		order by ordre
+	</select>
+
+
+
+
+	<select id="getLegende" resultClass="java.util.HashMap">
+		select
+		profil_abr,
+		profil_lib,
+		legende,
+		profil_ordre
+		from
+		ref_profil
+		where
+		diplome_$$c=#diplome:VARCHAR#
+		and legende is not null
+		order by
+		profil_ordre
+	</select>
+
+
+	<select id="getListeInsUV" resultClass="java.util.HashMap">
+		select
+		etu_id,
+		(select
+		an_univ||prd_univ from uv_ouv uo,uv_ouvertes uos
+		where uos.uv_ouv_id =
+		uo.uv_ouv_id
+		and uos.nle_uv_ouverte_id = eiu.nle_uv_ouverte_id) as
+		periode,
+
+		(select diplome_$$c from uv_ouvertes
+		where nle_uv_ouverte_id =
+		eiu.nle_uv_ouverte_id) as diplome_$$c,
+		(select uv_$$c from uv_ouv
+		uo,uv_ouvertes uos
+		where uos.uv_ouv_id = uo.uv_ouv_id
+		and
+		uos.nle_uv_ouverte_id = eiu.nle_uv_ouverte_id) as uv_$$c,
+		(select
+		categ_abr from ref_categorie where categ_id = eiu.categ_id_insuv) as
+		categ_abr,
+		resuv_$$c,
+		nb_credits_ects_insuv,
+		(select profil_abr from
+		ref_profil
+		where profil_id = eiu.profil_id
+		and
+		diplome_$$c=#diplome:VARCHAR#) as profil_abr,
+		profil_$$f
+		from
+		etu_inscr_uv eiu
+		where
+		etu_id= #etu_id:NUMERIC#
+		and
+		trim(substr(eiu.inscr_adm_id,7,5)) = #diplome:VARCHAR#
+	</select>
+
+
+	<select id="getInsUV" resultClass="java.util.LinkedHashMap">
+		select
+		etu_id,
+		(select
+		an_univ||prd_univ
+		from uv_ouv uo,uv_ouvertes uos
+		where
+		uos.uv_ouv_id =
+		uo.uv_ouv_id
+		and uos.nle_uv_ouverte_id = eiu.nle_uv_ouverte_id) as
+		periode,
+		(select diplome_$$c
+		from uv_ouvertes
+		where nle_uv_ouverte_id =
+		eiu.nle_uv_ouverte_id) as diplome,
+		(select uv_$$c
+		from uv_ouv
+		uo,uv_ouvertes uos
+		where uos.uv_ouv_id = uo.uv_ouv_id
+		and
+		uos.nle_uv_ouverte_id = eiu.nle_uv_ouverte_id) as uv,
+		(select categ_abr
+		from ref_categorie where categ_id = eiu.categ_id_insuv) as
+		categ_abr,
+		(select categ_ordre from ref_categorie where categ_id =
+		eiu.categ_id_insuv)
+		as categ_ordre,
+		decode(
+		eiu.publie_$$f,
+		'O',resuv_$$c,
+		'N',decode(resuv_$$c,
+		'ADM',resuv_$$c,'EQU',resuv_$$c,'DES',resuv_$$c,'')) as resuv,
+
+		decode(
+		eiu.publie_$$f,
+		'O',
+		to_char(fonc_resultat_valeurN(#diplome:VARCHAR#,
+		(select uv_$$c
+		from uv_ouv uo,uv_ouvertes uos
+		where uos.uv_ouv_id =
+		uo.uv_ouv_id
+		and uos.nle_uv_ouverte_id = eiu.nle_uv_ouverte_id),
+		resuv_$$c, nb_credits_ects_insuv,nb_credits_ects_insuv)),
+		'N',decode(resuv_$$c, 'EQU',nb_credits_ects_insuv,'')) as credit,
+
+
+		(select profil_abr
+		from ref_profil
+		where profil_id = eiu.profil_id
+		and
+		diplome_$$c=#diplome:VARCHAR#) as profil_abr,
+		profil_$$f as profilf,
+		nvl(decode(profil_$$f,
+		'O',(select legende
+		from ref_profil
+		where
+		profil_id = eiu.profil_id
+		and diplome_$$c=#diplome:VARCHAR#),
+		'N',
+		decode(resuv_$$c,'F','0032','FX','0032',
+		(select legende
+		from ref_profil
+		where profil_id = eiu.profil_id
+		and diplome_$$c=#diplome:VARCHAR#)),
+		''),'0032') as legende
+		from
+		etu_inscr_uv eiu
+		where
+		etu_id=
+		#etu_id:NUMERIC#
+		and trim(substr(eiu.inscr_adm_id,7,5)) =
+		#diplome:VARCHAR#
+		order by eiu.inscr_adm_id, categ_ordre,uv
+
+	</select>
+
+
+
+	<resultMap id="parcours" class="fr.utt.sig.suivi.beans.profil.Inscription">
+		<result property="id" column="ID" />
+		<result property="etu_id" column="etu_id" />
+		<result property="diplome" column="diplome_$c" />
+		<result property="an_univ" column="an_univ" />
+		<result property="prd_univ" column="prd_univ" />
+		<result property="libelle" column="libelle" />
+		<result property="formation" column="formation" />
+		<result property="stage" column="stage" />
+		<result property="observation" column="observation" />
+		<result property="soutenance" column="soutenance" />
+		<result property="specialite" column="dipl_spec_$c" />
+		<result property="niveau" column="dipl_opt_$c" />
+		<result property="decision" column="decision" />
+		<result property="situation" column="situation" />
+		<result property="session" column="prd_session" />
+		<result property="diplome_num" column="diplome_num" />
+	</resultMap>
+
+	<select id="getParcours" resultMap="parcours"><![CDATA[
+			SELECT
+			  eia.inscr_adm_id as id,
+			  eia.etu_id, 
+			  eia.diplome_$$c, 
+			  eia.an_univ, 
+			  eia.prd_univ, 
+			  eia.periode_libelle as libelle,
+			  eia.dipl_spec_abr ||' ' || eia.niveau_adm || ' ' || eia.dipl_opt_abr as formation,
+			    case 
+			      when jury_nouv_$$f='O' then 
+			           gest_uv.fonc_obs_stg(eia.etu_id,eia.an_univ||eia.prd_univ,1)
+			    end as stage,    
+			
+			  case
+			    when jury_publi_$$f='O' then
+			      case 
+			        when jury_nouv_$$f='O' then 
+			          eia.obs_gen
+			        else
+			          replace(substr(eia.obs_pedag,1,
+			          decode(instr(eia.obs_pedag,'-',1,3)-1,-1,length(eia.obs_pedag),
+			          instr(eia.obs_pedag,'-',1,3)-1)),'-  -','-')        
+			      end
+			     else ''
+			  end as observation, 
+			  (select to_char(sout_date,'DD/MM/YYYY') from gerry.these where doct_id = eia.etu_id and substr(eia.an_univ||eia.prd_univ,1,4)=to_char(sout_date,'YYYY')) as soutenance,
+			  eia.dipl_spec_$$c,
+			  eia.dipl_opt_$$c,
+			  (select libelle from gerry.ref_decision where res_pedag_$$c = eia.res_pedag_$$c and diplome_$$c = eia.diplome_$$c) as decision, 
+			  (select situation from gerry.ref_situation where situation_$$c = eia.situation_$$c) as situation,
+			  (select prd_session from gerry.ref_periode where an_univ||prd_univ = eia.an_univ||eia.prd_univ) as prd_session,
+			  (select diplome_num from gest_uv.etu_diplome where an_univ||prd_univ = eia.an_univ||eia.prd_univ and etu_id = eia.etu_id and diplome_$$c = eia.diplome_$$c) as diplome_num
+			FROM
+			  gerry.vue_etu_inscr_adm eia
+			WHERE 
+			eia.etu_id=#etu_id:NUMERIC#
+			and eia.diplome_$$c=#diplome:VARCHAR#
+			and eia.an_univ||eia.prd_univ between #prd_debut:VARCHAR# and #prd_fin:VARCHAR# 
+			order by eia.inscr_adm_id
+]]>
+	</select>
+
+	<resultMap id="diplomes" class="fr.utt.sig.suivi.beans.profil.Diplome">
+		<result property="id" column="ID" />
+		<result property="etu_id" column="ETU_ID" />
+		<result property="libelle" column="LIBELLE" />
+		<result property="prd_debut" column="PRD_DEBUT" />
+		<result property="prd_fin" column="PRD_FIN" />
+		<result property="debut" column="DEBUT" />
+		<result property="fin" column="FIN" />
+		<result property="reoriente" column="REORIENTE" />
+		<result property="niveau_entree" column="NIV_ENTREE" />
+		<result property="specialite" column="DIPL_SPEC_$C" />
+		<result property="inscriptions_adm"
+			column="{etu_id=etu_id,diplome=id,prd_debut=prd_debut,prd_fin=prd_fin}"
+			select="getParcours" />
+		<result property="inscriptions_uv" column="{etu_id=etu_id,diplome=id}"
+			select="getInsUV" />
+		<result property="categories" column="ID" select="getCategories" />
+		<result property="legende" column="ID" select="getLegende" />
+		<result property="totaux"
+			column="{etu_id=etu_id,diplome=id,prd_debut=prd_debut,specialite=DIPL_SPEC_$C,niveau_entree=NIV_ENTREE}"
+			select="getTotal" />
+	</resultMap>
+
+
+	<select id="getDiplomes" resultMap="diplomes">
+	    <!--Modif RN du 04/03/2014 decode(vtp.dipl_spec_$$c,'110',vtp.dipl_spec_$$c,null) -->
+		select
+		vtp.etu_id,
+		vtp.diplome_$$c as id,
+		decode(vtp.diplome_$$c,'ING',d.diplome || ' ancien
+		règlement',d.diplome) as libelle,
+		vtp.prd_debut,
+		vtp.prd_fin,
+		gerry.fonc_trad_prd_lib(vtp.prd_debut,'anprd') as debut,
+		gerry.fonc_trad_prd_lib(vtp.prd_fin,'anprd') as fin,
+		vtp.reorient_$$f
+		as reoriente,
+		vtp.niv_entree,
+		decode(vtp.dipl_spec_$$c,'110',vtp.dipl_spec_$$c,'128',vtp.dipl_spec_$$c,null) as
+		dipl_spec_$$c,
+		d.PROFIL_C_$$F as profil_c
+		from
+		PROFIL_PARCOURS vtp,
+		gerry.diplome d
+		where
+		vtp.diplome_$$c = d.diplome_$$c
+		and vtp.etu_id =
+		#etu_id:numeric#
+		<dynamic>
+			<isNotEmpty property="reoriente">
+				<isEqual prepend="and" property="reoriente" compareValue="N">
+					vtp.reorient_$$f='N'
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		order by prd_debut,prd_fin
+	</select>
+
+
+	<select id="getCategories" resultClass="java.util.LinkedHashMap"><![CDATA[
+			select 
+			rc.categ_id as id,
+			rc.categ_lib as libelle,
+			rc.categ_abr as lib_abr,
+			categ_ordre as ordre 
+			from 
+			  ref_categorie rc, 
+			  gerry.diplome d
+			where 
+			rc.diplome_$$c = d.diplome_$$c
+			and rc.diplome_$$c=#diplome:VARCHAR#
+			and CATEG_ABR<>'NA'
+			and
+			(select pp.an_univ||pp.prd_univ as prd from gerry.param_prd pp,gerry.diplome p 
+			 where p.diplome_$$c = d.diplome_$$c 
+			 and par_prd_type=decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')
+			) 
+			between nvl(rc.deb_an_univ||rc.deb_prd_univ,'19001A') and nvl(rc.fin_an_univ||rc.fin_prd_univ,'99992P')
+			order by ordre
+
+]]>
+	</select>
+
+	<select id="getMineurs" resultClass="java.lang.String">
+		select mineur_$$c as mineur
+		from
+		gest_uv.etu_mineur
+		where
+		min_res_$$c in ('ADM','MEN')
+		and etu_id =
+		#etu_id:numeric#
+	</select>
+
+	<resultMap id="etudiant" class="fr.utt.sig.suivi.beans.profil.Etudiant"
+		groupBy="id">
+		<result property="id" column="id" />
+		<result property="civ_nom" column="civ_nom" />
+		<result property="nom" column="nom" />
+		<result property="prenom" column="prenom" />
+		<result property="email" column="email" />
+		<result property="date_nais" column="date_nais" />
+		<result property="com_nais" column="com_nais" />
+		<result property="conseiller" column="conseiller" />
+		<result property="der_dipl_obtenu" column="der_diplome" />
+		<result property="etab_der_dipl" column="etab_der_diplome" />
+		<result property="der_inscription" column="der_inscription" />
+		<result property="der_periode" column="der_periode" />
+		<result property="act_formation" column="act_formation" />
+		<result property="bac" column="bac" />
+		<result property="an_bac" column="an_bac" />
+		<result property="reoriente" column="reoriente" />
+		<result property="diplomes" column="{etu_id=id, reoriente=reoriente}"
+			select="getDiplomes" />
+		<result property="mineurs" column="{etu_id=id}" select="getMineurs" />
+	</resultMap>
+
+	<select id="getEtudiantp" resultMap="etudiant">
+		SELECT
+		distinct
+		i.indiv_id as id,
+		rc.civ_fr_abr || ' ' || i.prenom || ' ' || i.nom as civ_nom,
+		i.nom,
+		i.prenom,
+		to_char(i.nais_date,'DD/MM/YYYY') as date_nais,
+		i.nais_com || decode(rp.pays,null, '', ' (' || rp.pays || ')') as com_nais,
+		ie.IND_EMAIL as email,
+		(select BAC_SERIE_ABR
+		from gerry.ref_bac_serie rbs
+		where rbs.BAC_SERIE_$$C = e.BAC_SERIE_$$C ) as bac,
+		e.bac_an as an_bac,
+		(select dipl_obt from gerry.ref_dipl_obt where dipl_obt_$$c = e.dipl_obt_$$c)
+		as der_diplome,
+		e.DIPL_OBT_ETAB as etab_der_diplome,
+		co.conseiller_id,
+		( select re.civ_fr_abr|| ' ' || ind.nom || ' ' || ind.prenom
+		from gerry.individu ind ,gerry.ref_civilite re
+		where
+		ind.civilite_$$c=re.civilite_$$c
+		and ind.indiv_id = co.conseiller_id) as conseiller,
+		(select ef.form_lib
+		from gerry.etu_formation ef
+		where ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_inscription,
+		(select ef.form_an_univ
+		from gerry.etu_formation ef
+		where ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_periode,
+		(select dipl_spec_abr||' '||niveau_adm||' '||dipl_opt_abr
+		from gerry.vue_etu_inscr_adm vea
+		where
+		etu_id = i.indiv_id
+		and inscr_adm_id = (select max(inscr_adm_id)
+		from gerry.vue_etu_inscr_adm where etu_id =vea.etu_id)) as act_formation
+
+
+		FROM
+		gerry.etudiant e,
+		gerry.INDIVIDU i,
+		gerry.IND_EMAIL ie,
+		gerry.REF_CIVILITE rc,
+		gerry.REF_PAYS rp,
+		(select distinct conseiller_id,etu_id from gerry.etu_inscr_adm ee
+		where ee.etu_id = #etu_id:numeric#
+		and ee.inscr_adm_id = (select max(inscr_adm_id) from gerry.etu_inscr_adm
+		where etu_id=ee.etu_id)
+		) co
+		WHERE
+		e.indiv_id=i.indiv_id
+		and i.indiv_id=ie.indiv_id
+		and co.etu_id = i.indiv_id
+		AND i.civilite_$$c=rc.civilite_$$c
+		AND i.nais_pays_$$c=rp.pays_$$c(+)
+		AND ie.email_type_$$c='UTT'
+		AND i.indiv_id = #etu_id:numeric#
+	</select>
+
+
+	<select id="getEtudiantsP" resultMap="etudiant">
+		SELECT
+		distinct
+		i.indiv_id as id,
+		rc.civ_fr_abr || ' ' || i.prenom || ' '
+		|| i.nom as civ_nom,
+		i.nom,
+		i.prenom,
+		to_char(i.nais_date,'DD/MM/YYYY')
+		as date_nais,
+		i.nais_com || decode(rp.pays,null, '', ' (' || rp.pays ||
+		')') as com_nais,
+		ie.IND_EMAIL as email,
+		(select BAC_SERIE_ABR
+		from
+		gerry.ref_bac_serie rbs
+		where rbs.BAC_SERIE_$$C = e.BAC_SERIE_$$C ) as
+		bac,
+		e.bac_an as an_bac,
+		(select dipl_obt from gerry.ref_dipl_obt where
+		dipl_obt_$$c = e.dipl_obt_$$c)
+		as der_diplome,
+		e.DIPL_OBT_ETAB as
+		etab_der_diplome,
+		0 as conseiller_id,
+		( select re.civ_fr_abr|| ' ' ||
+		ind.nom || ' ' || ind.prenom
+		from gerry.individu ind,
+		gerry.ref_civilite re
+		where
+		ind.civilite_$$c=re.civilite_$$c
+		and
+		ind.indiv_id =
+		(select distinct conseiller_id from gerry.etu_inscr_adm
+		ee
+		where ee.etu_id = i.indiv_id
+		and ee.inscr_adm_id = (select
+		max(inscr_adm_id) from gerry.etu_inscr_adm
+		where etu_id=ee.etu_id)
+		)
+		) as
+		conseiller,
+
+		(select ef.form_lib
+		from gerry.etu_formation ef
+		where
+		ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from
+		gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_inscription,
+
+		(select ef.form_an_univ
+		from gerry.etu_formation ef
+		where
+		ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from
+		gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_periode,
+
+		(select
+		dipl_spec_abr||' '||niveau_adm||' '||dipl_opt_abr
+		from
+		gerry.vue_eia_abr vea
+		where
+		etu_id = e.indiv_id
+		and inscr_adm_id =
+		(select max(inscr_adm_id)
+		from gerry.vue_eia_abr
+		where etu_id
+		=vea.etu_id)) as act_formation,
+		eia.niveau_adm,
+		'$reoriente$' as
+		reoriente
+		FROM
+		gerry.etudiant e,
+		gerry.INDIVIDU i,
+		gerry.IND_EMAIL ie,
+		gerry.REF_CIVILITE rc,
+		gerry.REF_PAYS rp,
+		gerry.etu_inscr_adm eia
+		WHERE
+		eia.etu_id = e.indiv_id
+		and e.indiv_id=i.indiv_id
+		and
+		i.indiv_id=ie.indiv_id
+		AND i.civilite_$$c=rc.civilite_$$c
+		AND
+		i.nais_pays_$$c=rp.pays_$$c(+)
+		AND ie.email_type_$$c='UTT'
+		<dynamic>
+			<isNotEmpty property="convoques">
+				<isEqual prepend="and" property="convoques" compareValue="true">
+					eia.res_pedag_$$c = 'CV'
+				</isEqual>
+			</isNotEmpty>
+
+			<isNotEmpty property="doubledipl">
+				<isEqual prepend="and" property="doubledipl" compareValue="true">
+					eia.etu_id in (
+					select etu_id
+					from gerry.VUE_EIA_ABR
+					where
+					an_univ||prd_univ=#periode:VARCHAR#
+					having count(inscr_adm_id)>1
+					group by etu_id
+					)
+				</isEqual>
+			</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="diplome">
+				<isEmpty property="nom">
+					<isEmpty property="numero">
+						eia.diplome_$$c = #diplome:VARCHAR#
+					</isEmpty>
+				</isEmpty>
+			</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="periode">
+				<isEmpty property="nom">
+					<isEmpty property="numero">
+						eia.an_univ||eia.prd_univ
+						=#periode:VARCHAR#
+					</isEmpty>
+				</isEmpty>
+
+			</isNotEmpty>
+
+			<!-- <isNotEmpty prepend="and" property="niv"> <isEqual property="niv" 
+				compareValue="1"> eia.niveau_adm in ('1','2') and eia.dipl_spec_$$c = #spec:VARCHAR# 
+				</isEqual> <isEqual property="niv" compareValue="2"> eia.niveau_adm in ('3','4','5') 
+				and eia.dipl_spec_$$c = #spec:VARCHAR# </isEqual> </isNotEmpty> -->
+
+			<isNotNull prepend="and" property="niveau">
+
+				<isEqual property="trimaster" compareValue="false">
+					<isNotEqual property="niveau" compareValue="M1">
+						<isNotEqual property="niveau" compareValue="M2">
+							<isEmpty property="nom">
+								<isEmpty property="numero">
+									eia.dipl_spec_$$c||eia.niveau_adm =
+									#niveau:VARCHAR#
+								</isEmpty>
+							</isEmpty>
+						</isNotEqual>
+					</isNotEqual>
+				</isEqual>
+
+				<isEqual property="niveau" compareValue="M1">
+					eia.niveau_adm in
+					('1','2')
+				</isEqual>
+				<isEqual property="niveau" compareValue="M2">
+					eia.niveau_adm in
+					('3','4','5')
+				</isEqual>
+
+			</isNotNull>
+
+			<isEmpty property="numero">
+				<isNotEmpty prepend="and" property="nom">
+					gerry.fonc_enleve_accents(i.nom) like
+					upper(gerry.fonc_enleve_accents(#nom:VARCHAR#))
+				</isNotEmpty>
+			</isEmpty>
+
+			<isEmpty property="nom">
+				<isNotEmpty prepend="and" property="numero">
+					e.indiv_id
+					=#numero:NUMERIC#
+				</isNotEmpty>
+			</isEmpty>
+
+			<!-- <isNotNull property="niv"> order by act_formation,i.nom, i.prenom 
+				</isNotNull> -->
+
+			<isEqual property="trimaster" compareValue="true">
+				order by
+				eia.niveau_adm, i.nom, i.prenom
+			</isEqual>
+			<isEqual property="trimaster" compareValue="false">
+
+
+
+				order by i.nom,
+				i.prenom
+			</isEqual>
+			<!-- </isEmpty> -->
+
+
+		</dynamic>
+
+
+	</select>
+
+
+
+
+	<select id="getEtudiantsPT" resultMap="etudiant">
+		SELECT
+		distinct
+		i.indiv_id as id,
+		rc.civ_fr_abr || ' ' || i.prenom || ' '
+		|| i.nom as civ_nom,
+		i.nom,
+		i.prenom,
+		to_char(i.nais_date,'DD/MM/YYYY')
+		as date_nais,
+		i.nais_com || decode(rp.pays,null, '', ' (' || rp.pays ||
+		')') as com_nais,
+		ie.IND_EMAIL as email,
+		(select BAC_SERIE_ABR
+		from
+		gerry.ref_bac_serie rbs
+		where rbs.BAC_SERIE_$$C = e.BAC_SERIE_$$C ) as
+		bac,
+		e.bac_an as an_bac,
+		(select dipl_obt from gerry.ref_dipl_obt where
+		dipl_obt_$$c = e.dipl_obt_$$c)
+		as der_diplome,
+		e.DIPL_OBT_ETAB as
+		etab_der_diplome,
+		0 as conseiller_id,
+		( select re.civ_fr_abr|| ' ' ||
+		ind.nom || ' ' || ind.prenom
+		from gerry.individu ind,
+		gerry.ref_civilite re
+		where
+		ind.civilite_$$c=re.civilite_$$c
+		and
+		ind.indiv_id =
+		(select distinct conseiller_id from gerry.etu_inscr_adm
+		ee
+		where ee.etu_id = i.indiv_id
+		and ee.inscr_adm_id = (select
+		max(inscr_adm_id) from gerry.etu_inscr_adm
+		where etu_id=ee.etu_id)
+		)
+		) as
+		conseiller,
+
+		(select ef.form_lib
+		from gerry.etu_formation ef
+		where
+		ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from
+		gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_inscription,
+
+		(select ef.form_an_univ
+		from gerry.etu_formation ef
+		where
+		ef.etu_id=e.indiv_id
+		and ef.etu_form_id = (select max(etu_form_id)
+		from
+		gerry.etu_formation
+		where etu_id=ef.etu_id )) as der_periode,
+
+		(select
+		dipl_spec_abr||' '||niveau_adm||' '||dipl_opt_abr
+		from
+		gerry.vue_eia_abr vea
+		where
+		etu_id = e.indiv_id
+		and inscr_adm_id =
+		(select max(inscr_adm_id)
+		from gerry.vue_eia_abr
+		where etu_id
+		=vea.etu_id)) as act_formation,
+		eia.niveau_adm,
+		'$reoriente$' as
+		reoriente
+		FROM
+		gerry.etudiant e,
+		gerry.INDIVIDU i,
+		gerry.IND_EMAIL ie,
+		gerry.REF_CIVILITE rc,
+		gerry.REF_PAYS rp,
+		gerry.etu_inscr_adm eia
+		WHERE
+		eia.etu_id = e.indiv_id
+		and e.indiv_id=i.indiv_id
+		and
+		i.indiv_id=ie.indiv_id
+		AND i.civilite_$$c=rc.civilite_$$c
+		AND
+		i.nais_pays_$$c=rp.pays_$$c(+)
+		AND ie.email_type_$$c='UTT'
+		<dynamic>
+			<isNotEmpty property="convoques">
+				<isEqual prepend="and" property="convoques" compareValue="true">
+					eia.res_pedag_$$c = 'CV'
+				</isEqual>
+			</isNotEmpty>
+
+			<isNotEmpty property="doubledipl">
+				<isEqual prepend="and" property="doubledipl" compareValue="true">
+					eia.etu_id in (
+					select etu_id
+					from gerry.VUE_EIA_ABR
+					where
+					an_univ||prd_univ=#periode:VARCHAR#
+					having count(inscr_adm_id)>1
+					group by etu_id
+					)
+				</isEqual>
+			</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="diplome">
+				<isEmpty property="nom">
+					<isEmpty property="numero">
+						eia.diplome_$$c = #diplome:VARCHAR#
+					</isEmpty>
+				</isEmpty>
+			</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="periode">
+				<isEmpty property="nom">
+					<isEmpty property="numero">
+						eia.an_univ||eia.prd_univ
+						=#periode:VARCHAR#
+					</isEmpty>
+				</isEmpty>
+
+			</isNotEmpty>
+
+			<isNotNull prepend="and" property="mention">
+				eia.dipl_spec_$$c =
+				#mention:VARCHAR#
+			</isNotNull>
+
+
+
+
+			<isNotNull prepend="and" property="niveau">
+
+
+				<isEqual property="niveau" compareValue="M1">
+					eia.niveau_adm in
+					('1','2')
+				</isEqual>
+				<isEqual property="niveau" compareValue="M2">
+					eia.niveau_adm in
+					('3','4','5','6')
+				</isEqual>
+
+			</isNotNull>
+
+			<isEmpty property="numero">
+				<isNotEmpty prepend="and" property="nom">
+					gerry.fonc_enleve_accents(i.nom) like
+					upper(gerry.fonc_enleve_accents(#nom:VARCHAR#))
+				</isNotEmpty>
+			</isEmpty>
+
+			<isEmpty property="nom">
+				<isNotEmpty prepend="and" property="numero">
+					e.indiv_id
+					=#numero:NUMERIC#
+				</isNotEmpty>
+			</isEmpty>
+
+			<isNotEmpty property="convoques">
+				<isEqual prepend="and" property="convoques" compareValue="true">
+					eia.res_pedag_$$c = 'CV'
+				</isEqual>
+			</isNotEmpty>
+
+
+			order by i.nom, i.prenom
+
+		</dynamic>
+
+
+	</select>
+
+
+
+</sqlMap>

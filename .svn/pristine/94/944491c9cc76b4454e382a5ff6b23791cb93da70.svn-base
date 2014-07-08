@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans SYSTEM "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/jdbc.properties" />
+	</bean>
+	<!-- org.springframework.jdbc.datasource.DriverManagerDataSource com.mchange.v2.c3p0.ComboPooledDataSource 
+		org.apache.commons.dbcp.BasicDataSource -->
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource" destroy-method="finalize">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="/WEB-INF/classes/sqlmap-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="suiviSQL" class="fr.utt.sig.suivi.dao.Data">
+		<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate">
+		</property>
+	</bean>
+	<bean id="listeSQL" class="fr.utt.sig.suivi.dao.Liste">
+		<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate">
+		</property>
+	</bean>
+	<bean id="extractionSQL" class="fr.utt.sig.suivi.dao.Extractions">
+		<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate">
+		</property>
+	</bean>
+</beans>

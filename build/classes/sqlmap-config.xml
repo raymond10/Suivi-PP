@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="200" maxSessions="10"
+		maxTransactions="5" useStatementNamespaces="false"
+		defaultStatementTimeout="10" statementCachingEnabled="true"
+		classInfoCacheEnabled="true" />
+
+
+
+	<sqlMap resource="uv.xml" />
+	<sqlMap resource="liste.xml" />
+	<sqlMap resource="profil.xml" />
+	<sqlMap resource="recherche.xml" />
+	<sqlMap resource="user.xml" />
+	<sqlMap resource="extractions.xml" />
+
+</sqlMapConfig>

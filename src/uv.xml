@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Uv">
+
+	<resultMap id="uv" class="fr.utt.sig.suivi.beans.Uv">
+
+		<result property="id" column="ID" />
+		<result property="uv" column="UV_$C" />
+		<result property="anuniv" column="AN_UNIV" />
+		<result property="langue" column="LANGUE_$C" />
+		<result property="titre" column="TITRE" />
+		<result property="objectif" column="OBJECTIF" />
+		<result property="programme" column="PROGRAMME" />
+		<result property="credate" column="CRE_DATE" />
+		<result property="modifdate" column="MODIF_DATE" />
+		<result property="auteur" column="MAJ_AUTEUR" />
+		<result property="chargeTrav" column="ID" select="getChargeTrav" />
+		<result property="perEnseignement" column="ID" select="getPerEnseignement" />
+	</resultMap>
+
+	<resultMap id="mchargeTrav" class="java.util.HashMap">
+		<result property="id" column="ID" />
+		<result property="libelle" column="LIBELLE" />
+		<result property="nbheures" column="NB_HEURES" />
+	</resultMap>
+
+
+	<select id="getChargeTrav" parameterClass="java.lang.Integer"
+		resultMap="mchargeTrav">
+		SELECT
+		cte.type_ens_id as id,
+		rte.libelle,
+		cte.nb_heures
+		FROM
+		ref_type_ens rte, cata_type_ens cte
+		WHERE
+		rte.type_ens_id =
+		cte.type_ens_id
+		and rte.langue_$$c='FRA'
+		and cte.cata_id = #value#
+	</select>
+
+	<resultMap id="generique" class="java.util.HashMap">
+		<result property="id" column="ID" />
+		<result property="libelle" column="LIBELLE" />
+	</resultMap>
+
+
+	<select id="getPerEnseignement" parameterClass="java.lang.Integer"
+		resultMap="generique">
+		SELECT
+		cpe.cata_id as id,
+		pt.libelle
+		FROM cata_prd_ens cpe,
+		ref_prd rp, prd_trad pt
+		WHERE
+		rp.prd_univ = cpe.prd_univ
+		AND rp.prd_univ
+		= pt.prd_univ
+		AND cpe.CATA_ID = #value#
+	</select>
+
+
+	<select id="getAntecedents" parameterClass="java.lang.Integer"
+		resultMap="generique">
+		SELECT
+		cua.cata_id as id,
+		cua.uv_$$c as libelle
+		FROM
+		cata_uv_ante cua
+		where cua.cata_id = #value#
+	</select>
+
+	<select id="getUvs" resultMap="uv"><![CDATA[
+select
+ ca.cata_id as id, 
+ ca.uv_$$c,
+ ca.an_univ,
+ ct.langue_$$c,
+ ct.titre,
+ ct.objectif,
+ ct.programme,
+ ct.cre_date,
+ ct.modif_date,
+ ct.maj_auteur 
+from 
+cata_trad ct,
+catalogue ca
+where
+ ct.cata_id = ca.cata_id
+ and ca.an_univ = '2006'
+ order by 2 asc
+]]>
+	</select>
+
+	<select id="getUvsByCode" resultMap="uv"><![CDATA[
+select
+ ca.cata_id as id, 
+ ca.uv_$$c,
+ ca.an_univ,
+ ct.langue_$$c,
+ ct.titre,
+ ct.objectif,
+ ct.programme,
+ ct.cre_date,
+ ct.modif_date,
+ ct.maj_auteur 
+from 
+cata_trad ct,
+catalogue ca
+where
+ ct.cata_id = ca.cata_id
+ and  ca.uv_$$c like #uv#
+ order by 2 asc
+]]>
+	</select>
+
+	<select id="getUvsByCriteria" resultMap="uv">
+		select
+		ca.cata_id as id,
+		ca.uv_$$c,
+		ca.an_univ,
+		ct.langue_$$c,
+		ct.titre,
+		ct.objectif,
+		ct.programme,
+		ct.cre_date,
+		ct.modif_date,
+		ct.maj_auteur
+		from
+		cata_trad ct,
+		catalogue ca
+		where
+		ct.cata_id = ca.cata_id
+		and ca.an_univ =
+		'2006'
+		<dynamic>
+			<isNotEmpty prepend="and" property="code">
+				ca.uv_$$c like
+				UPPER(#code#)||'%'
+			</isNotEmpty>
+			<isNotNull prepend="and" property="categorie">
+				ca.categ_id =
+				#categorie:NUMERIC#
+			</isNotNull>
+		</dynamic>
+		order by 2 asc
+	</select>
+
+	<select id="getUv" resultMap="uv">
+		select
+		ca.cata_id as id,
+		ca.uv_$$c,
+		ca.an_univ,
+		ct.langue_$$c,
+		ct.titre,
+		ct.objectif,
+		ct.programme,
+		ct.cre_date,
+		ct.modif_date,
+		ct.maj_auteur
+		from
+		cata_trad ct,
+		catalogue ca
+		where
+		ct.cata_id = ca.cata_id
+		and ca.an_univ = #an_univ:VARCHAR#
+		and
+		ca.uv_$$c = #uv:VARCHAR#
+		and ct.langue_$$c = 'FRA'
+
+	</select>
+
+
+</sqlMap>

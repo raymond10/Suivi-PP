@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- - Application context definition for "example" DispatcherServlet. -->
+<beans>
+	<!-- - A very simple Controller implementation could look as follows: - 
+		public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse 
+		response) { - return new ModelAndView("/test.jsp"); - } -->
+	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
+		<property name="exceptionMappings"> <props> <prop key="org.springframework.dao.DataAccessException"> 
+		dataAccessFailure </prop> </props> </property> </bean> -->
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/suivi.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="config" class="fr.utt.sig.suivi.config.Config">
+		<property name="propertiesfile" value="${suivi.config_path}config.properties">
+		</property>
+	</bean>
+	<!-- le résolveur de vues -->
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="vues"/>
+		<property name="defaultParentView" value="layoutView"/>
+	</bean>
+	
+	<bean id="recherche" class="fr.utt.sig.suivi.beans.Recherche">
+		<property name="diplome" value="ING2"></property>
+		<property name="periode" value="20061A"></property>
+	</bean>
+
+	<bean id="extraction" class="fr.utt.sig.suivi.beans.Extraction"></bean>
+
+	<!-- liens vers les pages -->
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/login.do">loginController</prop>
+				<prop key="rechercheEtudiant.do">rechercheEtudiantController</prop>
+				<prop key="editions.do">editionController</prop>
+				<prop key="report.do">reportController</prop>
+				<prop key="/profil.do">suiviController</prop>
+				<prop key="extractions.do">extractionsController</prop>
+				<prop key="extraction*.csv">extractionsController</prop>
+				<prop key="imprimer.do">suiviController</prop>
+				<prop key="uv.do">suiviController</prop>
+				<prop key="/error*.do">errorsController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- les contrôleurs de l'application -->
+	<bean id="errorsController" class="fr.utt.sig.suivi.ErrorsController">
+		<property name="methodNameResolver">
+			<bean
+				class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver"
+				id="propertiesMethod">
+				<property name="mappings">
+					<props>
+						<prop key="/errors.do">handleErrors</prop>
+						<prop key="/error404.do">handle404</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="rechercheEtudiantController" class="fr.utt.sig.suivi.RechercheEtudiantController">
+		<property name="suivi" ref="suiviSQL"></property>
+		<property name="listes" ref="listeSQL"></property>
+		<property name="recherche" ref="recherche"></property>
+	</bean>
+
+	<bean id="editionController" class="fr.utt.sig.suivi.EditionController">
+		<property name="config" ref="config"></property>
+		<property name="suivi" ref="suiviSQL"></property>
+		<property name="listes" ref="listeSQL"></property>
+		<property name="recherche" ref="recherche"></property>
+	</bean>
+
+	<bean id="reportController" class="fr.utt.sig.suivi.ReportController">
+		<property name="suivi" ref="suiviSQL" />
+		<property name="listes" ref="listeSQL"></property>
+		<property name="config" ref="config" />
+
+		<property name="methodNameResolver">
+			<bean
+				class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/report.do">report</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="extractionsController" class="fr.utt.sig.suivi.ExtractionsController">
+		<property name="suivi" ref="suiviSQL" />
+		<property name="listes" ref="listeSQL" />
+		<property name="extractions" ref="extractionSQL" />
+		<property name="extraction" ref="extraction" />
+	</bean>
+	<bean id="suiviController" class="fr.utt.sig.suivi.SuiviController">
+		<property name="suivi" ref="suiviSQL" />
+		<property name="listes" ref="listeSQL"></property>
+		<property name="config" ref="config" />
+		<property name="methodNameResolver">
+			<bean
+				class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/uv.do">handleUV</prop>
+						<prop key="/profil.do">handleProfil</prop>
+						<prop key="/imprimer.do">handleImpression</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="loginController" class="fr.utt.sig.suivi.loginController">
+		<property name="data" ref="suiviSQL" />
+		<property name="listes" ref="listeSQL"></property>
+		<property name="config" ref="config"></property>
+		<property name="methodNameResolver">
+			<bean
+				class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/login.do">login</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

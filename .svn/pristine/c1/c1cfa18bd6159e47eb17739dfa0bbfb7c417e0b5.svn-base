@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="Catalogue"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="700"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="10"
+		 topMargin="20"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<style 
+		name="fond11"
+		isDefault="false"
+		forecolor="#000000"
+		backcolor="#000000"
+	>
+
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==11)]]></conditionExpression>
+			<style 
+				name="fond11"
+				isDefault="false"
+				forecolor="#C9BF92"
+				backcolor="#C9BF92"
+			/>
+		</conditionalStyle>
+			<conditionalStyle>
+				<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==12)]]></conditionExpression>
+				<style 
+					name="fond11"
+					isDefault="false"
+					forecolor="#FFCC66"
+					backcolor="#FFCC66"
+				/>
+			</conditionalStyle>
+				<conditionalStyle>
+					<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==17)]]></conditionExpression>
+					<style 
+						name="fond11"
+						isDefault="false"
+						forecolor="#326632"
+						backcolor="#326632"
+					/>
+				</conditionalStyle>
+					<conditionalStyle>
+						<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==16)]]></conditionExpression>
+						<style 
+							name="fond11"
+							isDefault="false"
+							forecolor="#CCCCCC"
+							backcolor="#CCCCCC"
+						/>
+					</conditionalStyle>
+	</style>
+	<style 
+		name="fond12"
+		isDefault="false"
+		forecolor="#000000"
+		backcolor="#000000"
+		pen="1Point"
+		fill="Solid"
+	>
+
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==11)]]></conditionExpression>
+			<style 
+				name="fond12"
+				isDefault="false"
+				forecolor="#000000"
+				backcolor="#C9BF92"
+				pen="1Point"
+				fill="Solid"
+			/>
+		</conditionalStyle>
+			<conditionalStyle>
+				<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==12)]]></conditionExpression>
+				<style 
+					name="fond12"
+					isDefault="false"
+					forecolor="#000000"
+					backcolor="#FFCC66"
+					pen="1Point"
+					fill="Solid"
+				/>
+			</conditionalStyle>
+				<conditionalStyle>
+					<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==17)]]></conditionExpression>
+					<style 
+						name="fond12"
+						isDefault="false"
+						forecolor="#000000"
+						backcolor="#326632"
+						pen="1Point"
+						fill="Solid"
+					/>
+				</conditionalStyle>
+					<conditionalStyle>
+						<conditionExpression><![CDATA[new Boolean($F{CATEG_ID}.intValue()==16)]]></conditionExpression>
+						<style 
+							name="fond12"
+							isDefault="false"
+							forecolor="#000000"
+							backcolor="#CCCCCC"
+							pen="1Point"
+							fill="Solid"
+						/>
+					</conditionalStyle>
+	</style>
+
+	<parameter name="ANNEE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["2007"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UVS" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["CM11"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORTS_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["C:\\user\\christophe\\dev\\workspace\\suivi\\war\\WEB-INF\\reports"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select
+ ca.cata_id as id, 
+ ca.uv_$c as UV,
+ ca.an_univ,
+ cd.categ_id,
+(select categ_lib 
+ from ref_categorie 
+	where categ_id = cd.categ_id) as categ_lib,
+ ct.langue_$c as LANGUE,
+ ct.titre,
+ ct.objectif,
+ ct.programme,
+ ct.cre_date,
+ ct.modif_date,
+ ct.maj_auteur 
+from 
+	cata_trad ct,
+	catalogue ca,
+	cata_dipl cd
+where
+ ct.cata_id = ca.cata_id
+ and ca.cata_id = cd.cata_id
+ and ca.an_univ = $P{ANNEE}
+order by categ_id,uv
+-- and ca.uv_$c in ('CM11')]]></queryString>
+
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="UV" class="java.lang.String"/>
+	<field name="AN_UNIV" class="java.lang.String"/>
+	<field name="CATEG_ID" class="java.math.BigDecimal"/>
+	<field name="CATEG_LIB" class="java.lang.String"/>
+	<field name="LANGUE" class="java.lang.String"/>
+	<field name="TITRE" class="java.lang.String"/>
+	<field name="OBJECTIF" class="java.lang.String"/>
+	<field name="PROGRAMME" class="java.lang.String"/>
+	<field name="CRE_DATE" class="java.sql.Timestamp"/>
+	<field name="MODIF_DATE" class="java.sql.Timestamp"/>
+	<field name="MAJ_AUTEUR" class="java.lang.String"/>
+
+
+		<group  name="categorie" isStartNewPage="true" >
+			<groupExpression><![CDATA[$F{CATEG_ID}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="680"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="-30"
+						y="-22"
+						width="595"
+						height="702"
+						key="image-1"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{REPORTS_DIR} +"\\images\\fond2.png"]]></imageExpression>
+				</image>
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="1"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="215"  isSplitAllowed="true" >
+				<elementGroup><!--  Start: 1 !-->
+				<rectangle>
+					<reportElement
+						style="fond11"
+						x="0"
+						y="-1"
+						width="98"
+						height="203"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="5"
+						width="98"
+						height="23"
+						forecolor="#C80039"
+						backcolor="#C80039"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				</elementGroup><!-- End 1 !-->
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="107"
+						y="10"
+						width="407"
+						height="16"
+						forecolor="#C80039"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Frutiger" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TITRE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="107"
+						y="54"
+						width="407"
+						height="30"
+						forecolor="#C9BF92"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Frutiger" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBJECTIF}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="107"
+						y="117"
+						width="407"
+						height="67"
+						forecolor="#C9BF92"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Frutiger" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PROGRAMME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="107"
+						y="40"
+						width="101"
+						height="14"
+						forecolor="#C80039"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Frutiger" pdfFontName="Helvetica-Bold" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Objectif :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="107"
+						y="104"
+						width="101"
+						height="14"
+						forecolor="#C80039"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Frutiger" pdfFontName="Helvetica-Bold" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Programme :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="5"
+						width="90"
+						height="23"
+						forecolor="#FFFFFF"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" pdfFontName="VeraBd.ttf" size="18" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Cp1252"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UV}]]></textFieldExpression>
+				</textField>
+				<elementGroup><!--  Start: 2 !-->
+				<line direction="BottomUp">
+					<reportElement
+						x="0"
+						y="28"
+						width="536"
+						height="0"
+						forecolor="#C80039"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="BottomUp">
+					<reportElement
+						x="98"
+						y="5"
+						width="0"
+						height="91"
+						forecolor="#C80039"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				</elementGroup><!-- End 2 !-->
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="13"
+						y="33"
+						width="72"
+						height="88"
+						key="subreport-1"/>
+					<subreportParameter  name="CATA_ID">
+						<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR}+"\\cata_charge.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="13"
+						y="130"
+						width="72"
+						height="45"
+						key="subreport-2"/>
+					<subreportParameter  name="CATA_ID">
+						<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR}+"\\cata_periode.jasper"]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						style="fond12"
+						mode="Opaque"
+						x="539"
+						y="-1"
+						width="14"
+						height="203"
+						forecolor="#FFFFFF"
+						key="textField"
+						isPrintRepeatedValues="false"
+						printWhenGroupChanges="categorie"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle" rotation="Right">
+						<font fontName="Bitstream Vera Sans Mono" pdfFontName="VeraMoBd.ttf" size="10" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CATEG_LIB}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="166"
+						y="0"
+						width="202"
+						height="18"
+						forecolor="#C80039"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["— " + $V{PAGE_NUMBER} + " —"]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

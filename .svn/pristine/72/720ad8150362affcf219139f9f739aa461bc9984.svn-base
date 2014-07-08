@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+
+	<resultMap id="user" class="fr.utt.sig.suivi.beans.User">
+		<result property="id" column="indiv_id" />
+		<result property="nom" column="nom" />
+		<result property="prenom" column="prenom" />
+		<result property="login" column="login" />
+		<result property="email" column="ind_email" />
+		<result property="periode" column="periode" />
+		<result property="lib_periode" column="lib_periode" />
+		<result property="isAdmin" column="{indiv_id=indiv_id}" select="isAdmin" />
+		<result property="isPersonnel" column="{indiv_id=indiv_id}"
+			select="isPersonnel" />
+		<result property="isEtudiant" column="{indiv_id=indiv_id}"
+			select="isEtudiant" />
+		<result property="isEnseignant" column="{indiv_id=indiv_id}"
+			select="isEnseignant" />
+		<result property="isConseiller" column="{indiv_id=indiv_id,periode=periode}"
+			select="isConseiller" />
+		<result property="etu_conseilles" column="{indiv_id=indiv_id,periode=periode}"
+			select="getConseilles" />
+		<result property="isResponsable_uv" column="{indiv_id=indiv_id}"
+			select="isResponsable_uv" />
+		<result property="uvs" column="{indiv_id=indiv_id,periode=periode}"
+			select="getUvs" />
+
+	</resultMap>
+
+
+
+
+	<select id="getUserByLogin" resultMap="user">
+		select
+		i.indiv_id,
+		i.login,
+		i.nom,
+		i.prenom,
+		ie.ind_email,
+		(select an_univ||prd_univ
+		from gerry.param_prd
+		where par_prd_type='DEF') as periode,
+		(select libelle from gerry.param_prd pp,gerry.ref_periode rp
+		where pp.par_prd_type='DEF'
+		and pp.an_univ||pp.prd_univ=rp.an_univ||rp.prd_univ) as lib_periode
+		from
+		gerry.individu i,
+		gerry.IND_EMAIL ie
+		where
+		i.indiv_id=ie.indiv_id(+)
+		and ie.email_type_$$c(+)='UTT'
+		and i.login = #login:VARCHAR#
+	</select>
+
+
+	<select id="getUserById" resultMap="user">
+		select
+		i.indiv_id,
+		i.login,
+		i.nom,
+		i.prenom,
+		ie.ind_email,
+		(select an_univ||prd_univ
+		from gerry.param_prd
+		where par_prd_type='DEF') as periode,
+		(select libelle from gerry.param_prd pp,gerry.ref_periode rp
+		where pp.par_prd_type='DEF'
+		and pp.an_univ||pp.prd_univ=rp.an_univ||rp.prd_univ) as lib_periode
+		from
+		gerry.individu i,
+		gerry.IND_EMAIL ie
+		where
+		i.indiv_id=ie.indiv_id(+)
+		and ie.email_type_$$c(+)='UTT'
+		and i.indiv_id = #id:NUMERIC#
+	</select>
+
+	<select id="getPeriode" resultClass="java.lang.String">
+		select
+		an_univ||prd_univ as periode
+		from
+		gerry.param_prd
+		where
+		par_prd_type='DEF'
+	</select>
+
+	<select id="isEnseignant" resultClass="java.lang.Integer">
+		select count(*) as nb
+		from
+		gerry.ut_pers_poste
+		where
+		nvl(situ_fin_date,sysdate+1) <![CDATA[ > ]]>
+		=sysdate
+		and suppr_logic_$$f='N'
+		and statut_$$c like 'ENS%'
+		and indiv_id = #indiv_id:NUMERIC#
+	</select>
+
+	<select id="isPersonnel" resultClass="java.lang.Integer">
+		select count(*) as nb
+		from
+		gerry.ut_pers_poste
+		where
+		nvl(situ_fin_date,sysdate+1) <![CDATA[ > ]]>
+		=sysdate
+		and suppr_logic_$$f='N'
+		and statut_$$c = 'IATOS'
+		and indiv_id = #indiv_id:NUMERIC#
+	</select>
+
+
+	<select id="isEtudiant" resultClass="java.lang.Integer">
+		select count(distinct eia.etu_id) as nb
+		from
+		gerry.etu_inscr_adm eia
+		where eia.etu_id = #indiv_id:NUMERIC#
+		having
+		min(an_univ||prd_univ) <![CDATA[<]]>
+		= (select max(an_univ||prd_univ)
+		from gerry.param_prd
+		where PAR_PRD_TYPE in ('DEF','DEF3C','STAGE'))
+
+	</select>
+
+
+	<select id="isAdmin" resultClass="java.lang.Integer">
+		select count(*) as nb
+		from
+		gerry.ut_pers_poste
+		where
+		nvl(situ_fin_date,sysdate+1) <![CDATA[ > ]]>
+		=sysdate
+		and suppr_logic_$$f='N'
+		and statut_$$c = 'IATOS'
+		and indiv_id in( 21489)
+		and indiv_id = #indiv_id:NUMERIC#
+	</select>
+
+	<select id="isConseiller" resultClass="java.lang.Integer">
+		select count(distinct eia.etu_id) as nb
+		from gerry.etu_inscr_adm eia
+		where
+		eia.conseiller_id = #indiv_id:NUMERIC#
+		and eia.an_univ||eia.prd_univ = #periode:VARCHAR#
+	</select>
+
+	<select id="getConseilles" resultClass="java.util.List">
+		select distinct eia.etu_id
+		from gerry.etu_inscr_adm eia
+		where
+		eia.conseiller_id = #indiv_id:NUMERIC#
+		and eia.an_univ||eia.prd_univ = #periode:VARCHAR#
+	</select>
+
+	<select id="isResponsable_uv" resultClass="java.lang.Integer">
+		select count(distinct uor.indiv_id) as nb
+		from uv_ouv_resp uor,
+		uv_ouv uo
+		where
+		uo.uv_ouv_id = uor.uv_ouv_id
+		and ens_$$f='O'
+		and uo.an_univ||prd_univ = #periode:VARCHAR#
+		and uor.indiv_id = #indiv_id:NUMERIC#
+	</select>
+
+	<select id="getUVs" resultClass="java.util.List">
+		select uv_$$c
+		from uv_ouv_resp uor,
+		uv_ouv uo
+		where
+		uo.uv_ouv_id = uor.uv_ouv_id
+		and ens_$$f='O'
+		and uo.an_univ||prd_univ = #periode:VARCHAR#
+		and uor.indiv_id = #indiv_id:NUMERIC#
+	</select>
+
+</sqlMap>
+
+

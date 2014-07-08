@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Extractions">
+
+<select id="getExportEtudiant" resultClass="java.util.LinkedHashMap">
+select distinct
+    to_char(e.indiv_id) as indiv_id,
+    rc.civ_fr_abr as "Civilité",
+    i.nom as "Nom",
+    i.prenom as "Prénom",
+    ie.ind_email as "E-mail",
+    eia1.diplome_$$c as "Diplôme1",
+    eia1.dipl_spec_abr as "Spécialité1",
+    eia1.dipl_opt_abr as "Option1",
+    eia1.niveau_adm as "Niveau1",
+    eia1.inscr_formule_$$c as "Type inscr1",
+    eia1.situation_$$c as "Situation1",
+				
+				(select eia2.diplome_$$c 
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c) as "Diplôme 2",
+
+				(select eia2.dipl_spec_abr
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c) as "Spécialité 2",
+
+				(select eia2.dipl_opt_abr
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c) as "Option 2",
+
+				(select eia2.niveau_adm
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c) as "Niveau 2",
+
+				(select eia2.situation_$$c
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c) as "Situation 2",										
+				
+    to_char(i.nais_date,'DD/MM/YYYY') as "Date naiss",
+    i.nais_com as "Com naiss",
+    pnais.pays as "Pays naiss",
+    pnat.pays as "Nationalité",
+    e.bac_an as "Année BAC",
+    rbs.bac_serie_abr as "Série BAC",
+    e.bac_mention as "Mention BAC",
+    e.bac_dept_$$c as "Dépt du BAC",
+    e.bac_ville as "Ville BAC",
+    e.bac_etab as "Etab BAC",
+    rdo.dipl_obt as "Der diplôme obt",
+    e.dipl_obt_etab as "Etab der diplôme1",
+    ddo.form_type_abr as "Der diplôme obt",
+    ddo.form_spec as "Spéc der diplôme",
+    ddo.form_lib as "Autre",
+    ddo.form_dept_$$c as "Dépt der diplôme obt",
+    ddo.pays as "Pays der diplôme",
+    ddo.form_ville as "Ville der diplôme",
+    ddo.form_etab as "Etab der diplôme 2",
+    cons.nom||' '||cons.prenom as "Conseiller",
+    stg.stg_type_abr as "En stage",
+    rp.prd_session as "Date d'entrée"
+  from 
+		  gerry.individu i, 
+				gerry.ref_civilite rc, 
+				gerry.ind_email ie, 
+				gerry.etudiant e,
+				gerry.vue_eia_abr eia1,
+		 	gerry.ref_pays pnais, 
+				gerry.ref_pays pnat, 
+				gerry.ref_bac_serie rbs, 
+				gerry.ref_dipl_obt rdo, 
+				gerry.individu cons,
+		
+	(select ss.etu_id, rst.stg_type_abr 
+	  from gerry.stage_sujet suj, gerry.stage_suivi ss, gerry.ref_stg_type rst 
+ 	 where suj.suj_id=ss.suj_id and ss.stg_type_$$c=rst.stg_type_$$c 
+   and ss.an_univ||ss.prd_univ='$periode$'
+   and suj.conv_etat_$$c   <![CDATA[ <> ]]>  'RES') stg,
+ 	gerry.vue_etu_eia_1 deb, 
+		gerry.ref_periode rp, 
+  gerry.vue_der_dipl_obtenu ddo
+where 
+  i.civilite_$$c=rc.civilite_$$c(+) 
+  and i.indiv_id=ie.indiv_id(+) 
+  and ie.email_type_$$c(+)='UTT'
+	and i.nais_pays_$$c=pnais.pays_$$c(+)
+	and i.nat_pays_$$c=pnat.pays_$$c(+)
+	and i.indiv_id=e.indiv_id 
+	and e.bac_serie_$$c=rbs.bac_serie_$$c(+)
+	and e.dipl_obt_$$c=rdo.dipl_obt_$$c(+)
+	
+	and e.indiv_id=eia1.etu_id 
+ 
+	and eia1.conseiller_id=cons.indiv_id(+)
+	and eia1.etu_id=deb.etu_id 
+ and eia1.diplome_$$c=deb.diplome_$$c 
+ and eia1.dipl_spec_$$c=deb.dipl_spec_$$c
+	
+	and i.indiv_id=stg.etu_id(+)
+	and deb.prd_deb=rp.an_univ||rp.prd_univ
+	and i.indiv_id=ddo.etu_id(+)
+	and eia1.an_univ||eia1.prd_univ = '$periode$'
+ and eia1.diplome_$$c = decode( 
+(select eia2.diplome_$$c 
+				 from gerry.vue_eia_abr eia2 
+					where eia2.etu_id = e.indiv_id 
+					and eia2.an_univ||eia2.prd_univ='$periode$'
+					and eia2.diplome_$$c<![CDATA[ <> ]]>eia1.diplome_$$c),'',eia1.diplome_$$c,'MST','ING2',null)
+ 
+<dynamic>
+	
+	<isNotEmpty prepend="and" property="diplome">
+		eia1.diplome_$$c = #diplome:VARCHAR#
+ </isNotEmpty>
+
+
+ <isNotEmpty prepend="and" property="niveau">
+		eia1.dipl_spec_$$c||eia1.niveau_adm = #niveau:VARCHAR#
+ </isNotEmpty>
+ 
+</dynamic>
+
+order by i.nom, i.prenom
+
+
+
+
+</select>
+
+
+</sqlMap>

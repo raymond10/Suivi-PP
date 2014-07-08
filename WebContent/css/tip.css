@@ -1,0 +1,77 @@
+.betterTip {
+	width:100%;
+}
+
+a.betterTip{
+	cursor:pointer;
+	text-decoration:none;
+	color:black;
+	background-color:transparent;	
+	display:block;
+	width:100%;
+	
+	white-space: nowrap;
+}
+
+.betterTip a:hover {
+  background-color:#F3F4BA;
+	text-decoration:none;
+	color:black;
+  
+}
+
+#BT_main {
+	position: relative;
+	z-index:101;
+	border:1px solid #CECF9D;
+	background-color:#F3F4BA;
+}
+
+#BT_copy{
+	padding:10px 10px 10px 10px;
+	color:#333333;
+}
+
+.BT_loader{
+	
+	background-image: url(../images/loader.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	width:100%;
+	height:12px;
+	
+}
+
+#BT_title{
+	background-color: #CCCCCC;
+	text-align: left;
+	padding-left: 8px;
+	padding-bottom: 5px;
+	padding-top: 2px;
+	font-weight:bold;
+	font-size:11px;
+}
+
+#BT_text p{
+	margin:3px 0;
+}
+
+#BT_text img{
+	padding: 1px;
+	border: 1px solid #CCCCCC;
+}
+
+
+.BT_shadow0 {
+	position:absolute;
+}
+.BT_shadow1 {
+	display:block;
+	padding-left:8px;
+	padding-top:8px;
+}
+
+.BT_shadow2 {
+	display:block;
+}
+

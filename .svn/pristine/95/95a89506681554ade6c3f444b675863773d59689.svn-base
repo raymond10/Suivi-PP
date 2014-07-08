@@ -1,0 +1,1386 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="candidature"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="3359"
+		 columnWidth="558"
+		 columnSpacing="0"
+		 leftMargin="27"
+		 rightMargin="27"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="REPORTS_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["C:\\user\\christophe\\dev\\workspace\\dadmission\\war\\WEB-INF\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ID" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1222)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select
+*
+from
+  mast_adm.vue_page1
+where
+  candidat_id = $P{ID}]]></queryString>
+
+	<field name="CANDIDAT_ID" class="java.math.BigDecimal"/>
+	<field name="PERIODE" class="java.lang.String"/>
+	<field name="LIB_PERIODE" class="java.lang.String"/>
+	<field name="FORM" class="java.lang.String"/>
+	<field name="FORMATION" class="java.lang.String"/>
+	<field name="EMPL_POS" class="java.lang.String"/>
+	<field name="SITUATION" class="java.lang.String"/>
+	<field name="VAE" class="java.lang.String"/>
+	<field name="DIPL_SPEC" class="java.lang.String"/>
+	<field name="MENTION" class="java.lang.String"/>
+	<field name="DIPL_OPT" class="java.lang.String"/>
+	<field name="SPECIALITE" class="java.lang.String"/>
+	<field name="NIVEAU_ADM" class="java.lang.String"/>
+	<field name="CIVILITE" class="java.lang.String"/>
+	<field name="NOM" class="java.lang.String"/>
+	<field name="PRENOM" class="java.lang.String"/>
+	<field name="NOM_JF" class="java.lang.String"/>
+	<field name="NAT_PAYS" class="java.lang.String"/>
+	<field name="NAIS_DATE" class="java.lang.String"/>
+	<field name="NAIS_LIEU" class="java.lang.String"/>
+	<field name="NAIS_PAYS" class="java.lang.String"/>
+	<field name="NUM_CAMPUS" class="java.lang.String"/>
+	<field name="IMED_INTER" class="java.lang.String"/>
+	<field name="DEPOT_S" class="java.lang.String"/>
+	<field name="ADRESSE_1" class="java.lang.String"/>
+	<field name="ADRESSE_2" class="java.lang.String"/>
+	<field name="CODE_POST" class="java.lang.String"/>
+	<field name="VILLE" class="java.lang.String"/>
+	<field name="ADR_PAYS" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="TEL_FIXE" class="java.lang.String"/>
+	<field name="TEL_PORT" class="java.lang.String"/>
+	<field name="CONFIRME" class="java.lang.String"/>
+
+		<background>
+			<band height="820"  isSplitAllowed="true" >
+				<elementGroup><!--  Start: 1 !-->
+				<ellipse>
+					<reportElement
+						x="53"
+						y="87"
+						width="25"
+						height="25"
+						forecolor="#EEEEEE"
+						backcolor="#EEEEEE"
+						key="ellipse-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<line direction="TopDown">
+					<reportElement
+						x="83"
+						y="29"
+						width="0"
+						height="791"
+						forecolor="#CCCCCC"
+						backcolor="#CCCCCC"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="3.0" lineStyle="Solid"/>
+</graphicElement>
+				</line>
+				<ellipse>
+					<reportElement
+						x="-10"
+						y="60"
+						width="41"
+						height="41"
+						forecolor="#EEEEEE"
+						backcolor="#EEEEEE"
+						key="ellipse-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="3"
+						y="0"
+						width="87"
+						height="87"
+						forecolor="#FFFFFF"
+						key="ellipse-2"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" />
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="10"
+						y="7"
+						width="73"
+						height="73"
+						forecolor="#EEEEEE"
+						backcolor="#EEEEEE"
+						key="ellipse-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<line direction="TopDown">
+					<reportElement
+						x="2"
+						y="72"
+						width="0"
+						height="748"
+						forecolor="#CCCCCC"
+						backcolor="#CCCCCC"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" >
+					<pen lineWidth="3.0" lineStyle="Solid"/>
+</graphicElement>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="6"
+						y="119"
+						width="72"
+						height="552"
+						forecolor="#EEEEEE"
+						key="staticText-47"/>
+					<box topPadding="5" bottomPadding="5"></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="Left">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" size="60" isBold="true" isUnderline="false" isPdfEmbedded ="true" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[www.utt.fr]]></text>
+				</staticText>
+				</elementGroup><!-- End 1 !-->
+			</band>
+		</background>
+		<title>
+			<band height="186"  isSplitAllowed="true" >
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="-29"
+						y="0"
+						width="535"
+						height="181"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{REPORTS_DIR} +"images/logo_utt.gif"]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="187"
+						y="0"
+						width="247"
+						height="47"
+						key="staticText-1"/>
+					<box>					<pen lineWidth="0.0" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Left">
+						<font fontName="Verdana" pdfFontName="Helvetica-Bold" size="18" isBold="true"/>
+					</textElement>
+				<text><![CDATA[MASTER STS DE L'UTT
+Dossier de candidature]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="469"
+						y="0"
+						width="89"
+						height="113"
+						key="staticText-2"
+						isPrintInFirstWholeBand="true"/>
+					<box>					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[A coller
+
+Photo 
+d’identité 
+obligatoire
+]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="119"
+						width="557"
+						height="62"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="7"
+						y="153"
+						width="102"
+						height="18"
+						key="staticText-5"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Année :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="125"
+						width="102"
+						height="22"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[N° de dossier :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="114"
+						y="125"
+						width="113"
+						height="22"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CANDIDAT_ID}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="114"
+						y="153"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{LIB_PERIODE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="240"
+						y="147"
+						width="288"
+						height="30"
+						key="staticText-23"/>
+					<box></box>
+					<textElement>
+						<font fontName="Tahoma" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Pour les candidats relevant de la formation continue un dossier de VAE ou de VAP est-il déposé ? :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="240"
+						y="125"
+						width="123"
+						height="22"
+						key="staticText-48"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Type de formation :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="372"
+						y="125"
+						width="156"
+						height="22"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FORMATION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="402"
+						y="158"
+						width="55"
+						height="14"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( ($F{VAE}).equals("O") ? "Oui" : "Non" )]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="2411"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="90"
+						y="731"
+						width="468"
+						height="780"
+						key="rectangle-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="90"
+						y="1591"
+						width="468"
+						height="780"
+						key="rectangle-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="90"
+						y="3"
+						width="468"
+						height="588"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="103"
+						y="16"
+						width="223"
+						height="25"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[IDENTITE ET COORDONNEES]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="72"
+						width="157"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="54"
+						width="82"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIVILITE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="387"
+						y="72"
+						width="170"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRENOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="222"
+						y="90"
+						width="219"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_JF}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="222"
+						y="108"
+						width="85"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NAIS_DATE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="363"
+						y="108"
+						width="188"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NAIS_LIEU}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="126"
+						width="128"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NAIS_PAYS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="446"
+						y="126"
+						width="108"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUM_CAMPUS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="144"
+						width="244"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ADRESSE_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="162"
+						width="244"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ADRESSE_2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="180"
+						width="97"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODE_POST}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="358"
+						y="180"
+						width="184"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VILLE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="198"
+						width="304"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ADR_PAYS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="416"
+						y="216"
+						width="135"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TEL_PORT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="197"
+						y="216"
+						width="113"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TEL_FIXE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="157"
+						y="234"
+						width="300"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAIL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="102"
+						y="72"
+						width="38"
+						height="18"
+						key="staticText-6"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Nom :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="326"
+						y="72"
+						width="61"
+						height="18"
+						key="staticText-7"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Prénom :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="90"
+						width="120"
+						height="18"
+						key="staticText-8"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Nom de jeune fille :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="108"
+						width="120"
+						height="18"
+						key="staticText-9"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Date de naissance :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="326"
+						y="108"
+						width="37"
+						height="18"
+						key="staticText-10"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Lieu :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="126"
+						width="81"
+						height="18"
+						key="staticText-11"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Nationalité :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="326"
+						y="126"
+						width="120"
+						height="18"
+						key="staticText-12"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[N° Campus France :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="144"
+						width="70"
+						height="18"
+						key="staticText-13"/>
+					<box></box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Adresse :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="180"
+						width="85"
+						height="18"
+						key="staticText-14"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Code postal :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="326"
+						y="180"
+						width="32"
+						height="18"
+						key="staticText-15"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Ville :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="198"
+						width="38"
+						height="18"
+						key="staticText-16"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Pays :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="216"
+						width="95"
+						height="18"
+						key="staticText-17"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Tél. personnel :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="326"
+						y="216"
+						width="90"
+						height="18"
+						key="staticText-18"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Tél. portable :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="102"
+						y="234"
+						width="57"
+						height="18"
+						key="staticText-19"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Courriel :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="103"
+						y="288"
+						width="193"
+						height="25"
+						key="staticText-20"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[SITUATION ACTUELLE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="103"
+						y="349"
+						width="296"
+						height="25"
+						key="staticText-21"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[CHOIX DE LA SPECIALITE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="94"
+						y="544"
+						width="460"
+						height="18"
+						key="staticText-22"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Pour la spécialité IMEDD 1ère année, souhaitez-vous postuler pour le cursus international ?]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="528"
+						y="544"
+						width="26"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{IMED_INTER}!=null ?
+   ($F{IMED_INTER}.toString().equals("I") ? "Oui" : "Non") : "Non")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="298"
+						y="291"
+						width="250"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SITUATION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="184"
+						y="388"
+						width="368"
+						height="41"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MENTION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="184"
+						y="434"
+						width="368"
+						height="41"
+						key="textField"/>
+					<box topPadding="4"></box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SPECIALITE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="184"
+						y="477"
+						width="108"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isPdfEmbedded ="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{NIVEAU_ADM}.toString().equals("1") ? "1ère année" : "2ème année")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="103"
+						y="388"
+						width="82"
+						height="18"
+						key="staticText-24"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Mention :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="103"
+						y="434"
+						width="82"
+						height="18"
+						key="staticText-25"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Spécialité :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="104"
+						y="738"
+						width="296"
+						height="25"
+						key="staticText-42"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[COMPETENCES LINGUISTIQUES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="104"
+						y="1036"
+						width="296"
+						height="25"
+						key="staticText-43"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[ACTIVITES PROFESSIONNELLES]]></text>
+				</staticText>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="104"
+						y="893"
+						width="443"
+						height="57"
+						key="subreport-2"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_langue.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="104"
+						y="1083"
+						width="443"
+						height="52"
+						key="subreport-4"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_actpro.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="104"
+						y="1394"
+						width="296"
+						height="25"
+						key="staticText-44"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[DOMAINE D'EXCELLENCE]]></text>
+				</staticText>
+				<break>
+					<reportElement
+						x="0"
+						y="1546"
+						width="558"
+						height="0"
+						key="element-2"/>
+				</break>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="104"
+						y="1446"
+						width="407"
+						height="51"
+						key="subreport-5"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_domexc.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="102"
+						y="1603"
+						width="296"
+						height="25"
+						key="staticText-45"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[DERNIER DIPLÔME OBTENU]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="104"
+						y="1991"
+						width="296"
+						height="25"
+						key="staticText-46"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[DIPLÔME EN COURS]]></text>
+				</staticText>
+				<break>
+					<reportElement
+						x="0"
+						y="2400"
+						width="558"
+						height="0"
+						key="element-3"/>
+				</break>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="104"
+						y="1652"
+						width="407"
+						height="37"
+						key="subreport-6"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_derdiplome.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="104"
+						y="2037"
+						width="407"
+						height="37"
+						key="subreport-7"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_courdiplome.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="102"
+						y="54"
+						width="50"
+						height="18"
+						key="staticText-49"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="12" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Civilité :]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="93"
+						y="271"
+						width="460"
+						height="0"
+						forecolor="#000000"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" >
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+</graphicElement>
+				</line>
+				<staticText>
+					<reportElement
+						x="103"
+						y="477"
+						width="82"
+						height="18"
+						key="staticText-50"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Année :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="94"
+						y="563"
+						width="445"
+						height="15"
+						key="staticText-51"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Avez-vous déposé un dossier de candidature à l’U de S ? ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="373"
+						y="563"
+						width="99"
+						height="15"
+						key="textField-3"/>
+					<box></box>
+					<textElement verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DEPOT_S}.toString().equals("O") ? "Oui" : "Non")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="104"
+						y="785"
+						width="444"
+						height="91"
+						key="staticText-52"/>
+					<box></box>
+					<textElement>
+						<font fontName="Times New Roman" pdfFontName="Times-Italic" size="12" isItalic="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[Pour être diplômé du Master, les étudiants doivent valider un niveau de langue dans une langue vivante étrangère enseignée à l’Université autre que leur langue maternelle.
+Vous devez joindre tous les justificatifs permettant d’évaluer votre niveau en langue étrangère : relevé de notes, certifications (TOEIC, BULATS…), attestation de formation en langue, etc.
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="457"
+						y="2374"
+						width="101"
+						height="17"
+						key="staticText-53"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica" size="12" isBold="false" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[3/4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="457"
+						y="1514"
+						width="101"
+						height="17"
+						key="staticText-54"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica" size="12" isBold="false" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[2/4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="457"
+						y="594"
+						width="101"
+						height="17"
+						key="staticText-55"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica" size="12" isBold="false" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[1/4]]></text>
+				</staticText>
+				<break>
+					<reportElement
+						x="0"
+						y="636"
+						width="558"
+						height="0"
+						key="element-4"/>
+				</break>
+				<line direction="TopDown">
+					<reportElement
+						x="93"
+						y="332"
+						width="460"
+						height="0"
+						forecolor="#000000"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" />
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="93"
+						y="510"
+						width="460"
+						height="0"
+						forecolor="#000000"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch" fill="Solid" />
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="800"  isSplitAllowed="false" >
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="90"
+						y="0"
+						width="468"
+						height="780"
+						key="rectangle-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="97"
+						y="67"
+						width="444"
+						height="48"
+						key="subreport-1"
+						stretchType="RelativeToTallestObject"/>
+					<subreportParameter  name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{REPORTS_DIR} + "candidature_piece.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="97"
+						y="15"
+						width="296"
+						height="25"
+						key="staticText-26"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[PIECES A FOURNIR (impérativement)]]></text>
+				</staticText>
+				<elementGroup><!--  Start: 2 !-->
+				<staticText>
+					<reportElement
+						x="97"
+						y="327"
+						width="451"
+						height="171"
+						key="staticText-35"/>
+					<box leftPadding="10" rightPadding="10" topPadding="10">					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Je déclare sur l'honneur que tous les renseignements portés sur ce dossier sont exacts et complets.
+
+
+Fait à : ..............................                    Le : ......................
+
+
+
+Signature du candidat :
+
+
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="539"
+						width="461"
+						height="15"
+						key="staticText-36"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Dossier à retourner, avec toutes les pièces demandées, à l'adresse suivante :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="565"
+						width="461"
+						height="63"
+						key="staticText-37"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[UTT - MASTER
+Programme master
+12, rue Marie Curie - BP 2060 - F - 10010 TROYES CEDEX
+
+
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="628"
+						width="461"
+						height="18"
+						key="staticText-38"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Tél : 03 25 71 58 80 / 76 87 - fax : 03 25 71 56 49]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="646"
+						width="461"
+						height="18"
+						key="staticText-39"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Pour toute information complémentaire : master@utt.fr]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="664"
+						width="461"
+						height="52"
+						key="staticText-40"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="18" isBold="true" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[DATE LIMITE DE RETOUR DES DOSSIERS
+30 MAI 2009*]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="97"
+						y="755"
+						width="461"
+						height="15"
+						key="staticText-41"/>
+					<box rightPadding="5"></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<text><![CDATA[(* date d'expédition du courrier faisant foi)]]></text>
+				</staticText>
+				</elementGroup><!-- End 2 !-->
+				<staticText>
+					<reportElement
+						x="457"
+						y="782"
+						width="101"
+						height="17"
+						key="staticText-56"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica" size="12" isBold="false" isPdfEmbedded ="true"/>
+					</textElement>
+				<text><![CDATA[4/4]]></text>
+				</staticText>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

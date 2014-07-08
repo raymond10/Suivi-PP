@@ -1,0 +1,7 @@
+# Properties file with suivi-related settings.
+# Applied by PropertyPlaceholderConfigurer from "applicationContext-*.xml".
+# Targeted at system administrators, to avoid touching the context XML files.
+
+suivi.config_path=/apache-tomcat-7.0.23/webapps/Suivi-PP/WEB-INF/classes/
+#suivi.config_path=/Users/naneon/Developpements/workspace-kepler/Suivi-PP/WebContent/WEB-INF/classes/
+#suivi.config_path=/home/tomcat7/webapps/Suivi-PP/WEB-INF/classes/

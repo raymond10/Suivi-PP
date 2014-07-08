@@ -1,0 +1,11 @@
+# Properties file with JDBC-related settings.
+# Applied by PropertyPlaceholderConfigurer from "applicationContext-*.xml".
+# Targeted at system administrators, to avoid touching the context XML files.
+
+jdbc.driverClassName=oracle.jdbc.driver.OracleDriver
+#jdbc.url=jdbc:oracle:thin:@asterix-dev.utt.fr:1531:GERRYD
+#jdbc.url=jdbc:oracle:thin:@asterix-dev.utt.fr:1530:GERRYT
+jdbc.url=jdbc:oracle\:thin:@asterix2.utt.fr:1522:GERRYPP
+#jdbc.url=jdbc:oracle:thin:@asterix2.utt.fr:1522:GERRYPP
+jdbc.username=gest_uv
+jdbc.password=pwd_gest_uv

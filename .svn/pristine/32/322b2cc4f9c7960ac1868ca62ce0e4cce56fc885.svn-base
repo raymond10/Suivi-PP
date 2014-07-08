@@ -1,0 +1,14 @@
+config.mac.dir_export=/Users/naneon/Developpements/workspace-juno/Suivi-PP/export/
+config.mac.dir_fnt=/Users/naneon/Developpements/workspace-juno/Suivi-PP/WebContent/WEB-INF/fonts/
+config.mac.dir_img=/Users/naneon/Developpements/workspace-juno/Suivi-PP/images/photo/
+config.mac.dir_reports=/Users/naneon/Developpements/workspace-juno/Suivi-PP/WebContent/WEB-INF/reports/
+
+config.linux.dir_export=/home/tomcat7/webapps/Suivi-PP/export/
+config.linux.dir_fnt=/home/tomcat7/webapps/Suivi-PP/WEB-INF/fonts/
+config.linux.dir_img=/home/tomcat7/webapps/Suivi-PP/images/photo/
+config.linux.dir_reports=/home/tomcat7/webapps/Suivi-PP/WEB-INF/reports/
+
+config.url_photo=http://local-sig.utt.fr/Pub/trombi/individu/mini/
+
+
+config.smtp_host=smtp.utt.fr

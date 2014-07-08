@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Liste">
+
+	<resultMap id="liste" class="fr.utt.sig.suivi.beans.ListeOV">
+		<result property="id" column="id" />
+		<result property="libelle" column="libelle" />
+		<result property="ordre" column="ordre" />
+	</resultMap>
+
+	<select id="getListeDiplomes" resultMap="liste"><![CDATA[
+		SELECT 
+		  diplome_$$c as id, 
+			decode(diplome_$$c,'ING', diplome || ' ancien règlement',diplome) as libelle,
+			decode(diplome_$$c,'ING2',1,'MST',2,'ING',3,'TC',4,5) as ordre 
+		FROM 
+		 gerry.diplome d
+		WHERE  
+		(select pp.an_univ||pp.prd_univ as prd from gerry.param_prd pp,gerry.diplome p 
+		 where p.diplome_$$c = d.diplome_$$c and par_prd_type=decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')) 
+		between nvl(d.deb_an_univ||d.deb_prd_univ,'19001A') and nvl(d.ferm_an_univ||d.ferm_prd_univ,'99992P')
+		order by ordre
+]]>
+	</select>
+
+
+	<select id="getListeDiplomesA" resultMap="liste">
+		SELECT
+		diplome_$$c as id,
+		decode(diplome_$$c,'ING', diplome || ' ancien règlement',diplome) as libelle,
+		decode(diplome_$$c,'ING2',1,'MST',2,'ING',3,'TC',4,5) as ordre
+		FROM
+		gerry.diplome d
+		WHERE
+		(select pp.an_univ||pp.prd_univ as prd from gerry.param_prd pp,gerry.diplome
+		p
+		where p.diplome_$$c = d.diplome_$$c and
+		par_prd_type=decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C'))
+		between nvl(d.deb_an_univ||d.deb_prd_univ,'19001A') and
+		nvl(d.ferm_an_univ||d.ferm_prd_univ,'99992P')
+		<dynamic>
+			<isNotEmpty prepend="and" property="periode">
+				#periode:VARCHAR# between nvl(d.deb_an_univ||d.deb_prd_univ,'19001A')
+				and nvl(d.ferm_an_univ||d.ferm_prd_univ,'99992P')
+			</isNotEmpty>
+		</dynamic>
+
+		order by ordre
+	</select>
+
+
+	<select id="getListePeriodes" resultMap="liste"><![CDATA[
+		SELECT
+		  rp.an_univ||rp.prd_univ as id,
+		  rp.libelle,
+		  1 as ordre
+		FROM 
+		  gerry.ref_periode rp,
+		  gerry.diplome d,
+		  gerry.param_prd pp
+		WHERE
+		  rp.PRD_TYPE_$$C = d.PRD_TYPE_$$C
+		  and pp.par_prd_type = decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C') 
+		  and rp.AN_UNIV || rp.PRD_UNIV 
+		      between nvl(d.DEB_AN_UNIV||d.DEB_PRD_UNIV,'19001A') 
+		      and nvl(d.FERM_AN_UNIV||d.FERM_PRD_UNIV,'99992P')
+		  and rp.an_univ||rp.prd_univ<=pp.AN_UNIV||pp.prd_univ
+		  and rp.prd_type_$$c = d.prd_type_$$c
+		  and d.diplome_$$c = #diplome:VARCHAR#  
+		order by 
+		  rp.an_univ||rp.prd_univ DESC
+]]>
+	</select>
+
+	<select id="getListePeriodesA" resultMap="liste">
+		SELECT distinct
+		rp.an_univ||rp.prd_univ as id,
+		rp.libelle,
+		decode(d.prd_type_$$c,'S', 1,'U', 2) as ordre
+		FROM
+		gerry.ref_periode rp,
+		gerry.diplome d,
+		gerry.param_prd pp
+		WHERE
+		rp.PRD_TYPE_$$C = d.PRD_TYPE_$$C
+		and pp.par_prd_type = decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')
+		and rp.AN_UNIV || rp.PRD_UNIV
+		between nvl(d.DEB_AN_UNIV||d.DEB_PRD_UNIV,'19001A')
+		and nvl(d.FERM_AN_UNIV||d.FERM_PRD_UNIV,'99992P')
+		and rp.an_univ||rp.prd_univ <![CDATA[ < ]]>
+		=pp.AN_UNIV||pp.prd_univ
+		and rp.prd_type_$$c = d.prd_type_$$c
+
+		<dynamic>
+			<isNotEmpty prepend="and" property="diplome">
+				d.diplome_$$c = #diplome:VARCHAR#
+			</isNotEmpty>
+		</dynamic>
+
+		order by ordre
+
+	</select>
+
+	<select id="getListePeriodesAB" resultMap="liste">
+		SELECT distinct
+		rp.an_univ||rp.prd_univ as id,
+		rp.libelle,
+		decode(d.prd_type_$$c,'S', 1,'U', 2) as ordre
+		FROM
+		gerry.ref_periode rp,
+		gerry.diplome d,
+		gerry.param_prd pp
+		WHERE
+		rp.PRD_TYPE_$$C = d.PRD_TYPE_$$C
+		and pp.par_prd_type = decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')
+		and rp.AN_UNIV || rp.PRD_UNIV
+		between nvl(d.DEB_AN_UNIV||d.DEB_PRD_UNIV,'19001A')
+		and nvl(d.FERM_AN_UNIV||d.FERM_PRD_UNIV,'99992P')
+		and rp.an_univ||rp.prd_univ <![CDATA[ < ]]>
+		=pp.AN_UNIV||pp.prd_univ
+		and rp.prd_type_$$c = d.prd_type_$$c
+
+		order by ordre
+
+	</select>
+
+
+	<select id="getPeriodeDefaut" resultClass="java.lang.String"><![CDATA[
+		SELECT
+		  rp.an_univ||rp.prd_univ as id
+		FROM 
+		  gerry.ref_periode rp,
+		  gerry.diplome d,
+		  gerry.param_prd pp
+		WHERE
+		  rp.PRD_TYPE_$$C = d.PRD_TYPE_$$C
+		  and pp.par_prd_type = decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C') 
+		  and rp.AN_UNIV || rp.PRD_UNIV 
+		      between nvl(d.DEB_AN_UNIV||d.DEB_PRD_UNIV,'19001A') 
+		      and nvl(d.FERM_AN_UNIV||d.FERM_PRD_UNIV,'99992P')
+		  and rp.an_univ||rp.prd_univ<=pp.AN_UNIV||pp.prd_univ
+		  and rp.prd_type_$$c = d.prd_type_$$c
+		  and d.diplome_$$c = #diplome:VARCHAR#  
+		  order by 
+		  rp.an_univ||rp.prd_univ DESC
+]]>
+	</select>
+
+
+	<select id="getListeNiveaux" resultMap="liste"><![CDATA[
+		SELECT
+		   distinct vds.dipl_spec_$$c||eia.niveau_adm as id, 
+		   vds.dipl_spec_abr|| eia.niveau_adm as libelle,
+		   vds.dipl_spec_abr|| eia.niveau_adm as ordre
+		FROM 
+		 gerry.etu_inscr_adm eia, gerry.vue_dipl_spec vds
+		WHERE 
+		 vds.diplome_$$c = eia.diplome_$$c
+		 and vds.dipl_spec_$$c = eia.dipl_spec_$$c
+		 and eia.an_univ||eia.prd_univ between nvl(vds.deb_prd,'19001A') and nvl(vds.stop_prd,'99992P')
+		 and eia.an_univ||eia.prd_univ = #periode:VARCHAR#
+		 and eia.diplome_$$c = #diplome:VARCHAR#
+		order by ordre
+]]>
+	</select>
+
+
+	<select id="getListeNiveauxA" resultMap="liste">
+		SELECT
+		distinct vds.dipl_spec_$$c||eia.niveau_adm as id,
+		vds.dipl_spec_abr|| eia.niveau_adm as libelle,
+		vds.dipl_spec_abr|| eia.niveau_adm as ordre
+		FROM
+		gerry.etu_inscr_adm eia, gerry.vue_dipl_spec vds
+		WHERE
+		vds.diplome_$$c = eia.diplome_$$c
+		and vds.dipl_spec_$$c = eia.dipl_spec_$$c
+		and eia.an_univ||eia.prd_univ between nvl(vds.deb_prd,'19001A') and
+		nvl(vds.stop_prd,'99992P')
+		<dynamic>
+			<isNotEmpty prepend="and" property="periode">
+				eia.an_univ||eia.prd_univ = #periode:VARCHAR#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="diplome">
+				eia.diplome_$$c = #diplome:VARCHAR#
+			</isNotEmpty>
+		</dynamic>
+
+		order by ordre
+
+	</select>
+
+
+	<select id="getListeSpecialites" resultMap="liste"><![CDATA[
+			SELECT
+			   distinct vds.dipl_spec_$$c as id, 
+			   vds.dipl_spec_abr as libelle,
+			   vds.dipl_spec_abr as ordre
+			FROM 
+			 gerry.vue_dipl_spec vds,gerry.diplome d
+			WHERE 
+			 vds.diplome_$$c = d.diplome_$$c
+			and  vds.diplome_$$c = #diplome:VARCHAR#
+			and
+			(select pp.an_univ||pp.prd_univ as prd from gerry.param_prd pp,gerry.diplome p 
+			 where p.diplome_$$c = vds.diplome_$$c 
+				and par_prd_type=decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')
+			) 
+			between nvl(vds.deb_prd,'19001A') and nvl(vds.stop_prd,'99992P')
+			order by ordre
+]]>
+	</select>
+
+
+	<select id="getListeCategories" resultMap="liste"><![CDATA[
+			select rc.categ_id as id,
+			rc.categ_lib as libelle,
+			categ_ordre as ordre 
+			from ref_categorie rc, gerry.diplome d
+			where 
+			rc.diplome_$$c = d.diplome_$$c
+			and rc.diplome_$$c=#diplome:VARCHAR#
+			and CATEG_ABR<>'NA'
+			and
+			(select pp.an_univ||pp.prd_univ as prd from gerry.param_prd pp,gerry.diplome p 
+			 where p.diplome_$$c = d.diplome_$$c 
+				and par_prd_type=decode(d.prd_type_$$c,'S', 'DEF','U', 'DEF3C')
+			) 
+			between nvl(rc.deb_an_univ||rc.deb_prd_univ,'19001A') and nvl(rc.fin_an_univ||rc.fin_prd_univ,'99992P')
+			order by ordre
+]]>
+	</select>
+
+	<select id="getListeSituations" resultMap="liste">
+		SELECT
+		deci_$$c as id,
+		decision as libelle,
+		1 as ordre
+		FROM ref_decision
+		WHERE DIPLOME_$$c = #diplome:VARCHAR#
+		and deci_$$c in('RE','DR')
+		order by ordre
+	</select>
+
+	<select id="getListeUVs" resultMap="liste">
+		select distinct
+		uv_$$c as id,
+		uv_$$c as libelle,
+		uv_$$c as ordre
+		from uv
+		where fictive_$$f='N'
+		order by ordre
+	</select>
+
+</sqlMap>
